@@ -89,9 +89,9 @@
                 <div class="col-sm-10">
                   	<select class="form-control" id="inputDepartment" name="department">
                   		<option></option>
-	                    <option value="Accounts">Accounts</option>
-	                    <option value="Creatives">Creatives</option>
-	                    <option value="Databases">Databases</option>
+                      @foreach($departments as $department)
+	                     <option value="{{ $department->department }}">{{ $department->department }}</option>
+                      @endforeach
 	                </select>
                   @if($errors->has('department'))
                   	<p class="bg-danger">{{ $errors->first('department') }}</p>
@@ -105,7 +105,6 @@
                   		<option></option>
 	                    <option value="0">Member</option>
 	                    <option value="1">Head</option>
-	                    <option value="2">System Administrator</option>
 	               </select>
                   @if($errors->has('position'))
                   	<p class="bg-danger">{{ $errors->first('position') }}</p>

@@ -88,6 +88,10 @@ a:after {
     transition: color 0.1s ease-in, background 0.1s ease-in;
 }
 
+.navbar-default .navbar-nav > li > a:hover {
+    color: #d58512;
+}
+
 hr {
     display: block;
     height: 1px;
@@ -203,6 +207,10 @@ i {
 /* Page */
 .home-label {
     color: #d58512;
+}
+
+.dashboard-options {
+    padding: 10px;
 }
 
 .dashboard-options:hover {

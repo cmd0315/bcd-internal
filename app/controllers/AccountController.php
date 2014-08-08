@@ -52,7 +52,8 @@
 
 		/* viewing the form */
 		public function getCreate() {
-			return View::make('account.create');
+			return 	View::make('account.create')
+					->with('departments', Department::orderBy('department')->get());
 		}
 
 		/* submitting the form */
@@ -105,7 +106,7 @@
 
 				if($account) {
 					if($employee) {
-						return 	Redirect::route('home')
+						return 	Redirect::route('admin-add-record')
 								->with('global', 'Employee account created!');
 					}
 					else {

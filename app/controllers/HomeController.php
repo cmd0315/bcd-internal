@@ -27,4 +27,8 @@ class HomeController extends BaseController {
 	public function forms() {
 		return View::make('online-forms.leave-of-absence');
 	}
+
+	public function adminAddRecord() {
+		return View::make('admin.add-record');
+	}
 }

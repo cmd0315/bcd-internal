@@ -20,5 +20,8 @@ class Employee extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $table = 'employees';
 
-
+	public function account()
+    {
+        return $this->belongsTo('Account');
+    }
 }

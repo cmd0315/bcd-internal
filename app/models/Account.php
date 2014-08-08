@@ -24,10 +24,14 @@ class Account extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
-	public function getName() {
-		$username = $this->username;
-		$employee = Employee::where('username', '==', $username)->get();
-		return $employee['name'];
-	}
+	public function employee()
+    {
+        return $this->hasOne('Employee');
+    }
 
+    public function getPosition() {
+    	$account = Account::find(1); 
+
+    	echo $account->employee->position;
+    }
 }
