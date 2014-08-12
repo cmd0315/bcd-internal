@@ -25,6 +25,11 @@ Route::get('/admin/add-record', array (
 	'as' => 'admin-add-record',
 	'uses' => 'HomeController@adminAddRecord'
 ));
+
+Route::get('/employee/{username}', array (
+	'as' => 'profile-employee',
+	'uses' => 'ProfileController@employee'
+));
 /*
 *
 * Authenticated group
@@ -36,60 +41,102 @@ Route::group(array('before' => 'auth'), function(){
 	*/
 	Route::group(array('before' => 'csrf'), function(){
 		/*
-		/ Create employee account (POST)
+		/ System Admin group
 		*/
-		Route::post('/account/create', array(
-			'as' => 'account-create-post',
-			'uses' => 'AccountController@postCreate'
-		));
+		Route::group(array('before' => 'role'), function() {
+			/*
+			/ Create employee account (POST)
+			*/
+			Route::post('/account/create', array(
+				'as' => 'account-create-post',
+				'uses' => 'AccountController@postCreate'
+			));
 
-		Route::post('account/change-profile-details', array(
-			'as' => 'account-change-profile-details-post',
+			/*
+			/ Add Department (POST)
+			*/
+			Route::post('/admin/department/add', array(
+				'as' => 'admin-add-department-post',
+				'uses' => 'ManageSystemDataController@postAddDepartment'
+			));
+
+			/*
+			/ Manage Employee Information (POST)
+			*/
+			Route::post('/employee/{username}', array (
+				'as' => 'profile-employee-edit',
+				'uses' => 'ProfileController@postEmployee'
+			));
+		});
+
+		Route::post('account/change-account-details', array(
+			'as' => 'account-change-account-details-post',
 			'uses' => 'AccountController@postChangeProfileDetails'
 		));
 
-		/*
-		/ Add Department (POST)
-		*/
-		Route::post('/admin/department/add', array(
-			'as' => 'admin-add-department-post',
-			'uses' => 'DepartmentController@postAddDepartment'
-		));
 	});
 
 
 	/*
 	/ Change Password (GET)
 	*/
-	Route::get('/account/change-profile-details', array(
-		'as' => 'account-change-profile-details',
+	Route::get('/account/change-account-details', array(
+		'as' => 'account-change-account-details',
 		'uses' => 'AccountController@getChangeProfileDetails'
 	));
 
-
 	/*
-	/ Create employee account (GET)
+	/ System Admin group
 	*/
-	Route::get('/account/create', array(
-		'as' => 'account-create',
-		'uses' => 'AccountController@getCreate'
-	));
+	Route::group(array('before' => 'role'), function() {
+		/*
+		/ Create employee account (GET)
+		*/
+		Route::get('/account/create', array(
+			'as' => 'account-create',
+			'uses' => 'AccountController@getCreate'
+		));
 
-	/*
-	/ Add Department (GET)
-	*/
-	Route::get('/admin/department/add', array(
-		'as' => 'admin-add-department',
-		'uses' => 'DepartmentController@getAddDepartment'
-	));
+		/*
+		/ Add Department (GET)
+		*/
+		Route::get('/admin/department/add', array(
+			'as' => 'admin-add-department',
+			'uses' => 'ManageSystemDataController@getAddDepartment'
+		));
 
-	/*
-	/ Manage Department (GET)
-	*/
-	Route::get('/admin/department/manage', array(
-		'as' => 'admin-manage-department',
-		'uses' => 'DepartmentController@getManageDepartment'
-	));
+		/*
+		/ Manage Department (GET)
+		*/
+		Route::get('/admin/department/manage', array(
+			'as' => 'admin-manage-department',
+			'uses' => 'ManageSystemDataController@getManageDepartment'
+		));
+
+		/*
+		/ Manage Employees (GET)
+		*/
+		Route::get('/admin/employee/manage', array(
+			'as' => 'admin-manage-employee',
+			'uses' => 'ManageSystemDataController@getManageEmployee'
+		));
+
+		/*
+		/ Delete Employees (GET)
+		*/
+		Route::get('/employee/deactivate/{username}', array(
+			'as' => 'admin-employee-deactivate',
+			'uses' => 'ManageSystemDataController@getDeactiveEmployeeAccount'
+		));
+
+		/*
+		/ Delete Departments (GET)
+		*/
+		Route::get('/department/delete/{department}', array(
+			'as' => 'admin-department-delete',
+			'uses' => 'ManageSystemDataController@getDeleteDepartment'
+		));
+	});
 
 	/*
 	/ Sign out (GET)

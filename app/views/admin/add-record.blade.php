@@ -17,7 +17,7 @@
       <div class="col-lg-4 dashboard-options">
           {{ HTML::image("img/add-record.png", "Employee", array('class' => 'thumb')) }}
           <h4>Employee</h4>
-          <a href="{{ URL::route('account-create') }}">Add</a> | <a href="#">Manage</a>
+          <a href="{{ URL::route('account-create') }}">Add</a> | <a href="{{ URL::route('admin-manage-employee') }}">Manage</a>
       </div><!--/col-lg-4 -->
       <div class="col-lg-4 dashboard-options">
         {{ HTML::image("img/departments.png", "Department", array('class' => 'thumb')) }}
@@ -29,9 +29,9 @@
 @stop
 
 @section('scripts')
-<script>
-$( document ).ready(function() {
-    console.log( "ready!" );
-});
+// <script>
+// $( document ).ready(function() {
+//     alert( "ready!" );
+// });
 </script>
 @stop

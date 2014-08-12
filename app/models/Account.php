@@ -26,7 +26,7 @@ class Account extends Eloquent implements UserInterface, RemindableInterface {
 
 	public function employee()
     {
-        return $this->hasOne('Employee');
+        return $this->hasOne('Employee', 'username', 'username');
     }
 
     public function getPosition() {

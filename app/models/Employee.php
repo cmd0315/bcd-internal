@@ -11,7 +11,9 @@ class Employee extends Eloquent implements UserInterface, RemindableInterface {
 	
 	public $timestamps = false;
 
-	protected $fillable = array('username', 'name', 'email', 'mobile', 'department', 'position');
+	protected $fillable = array('username', 'first_name', 'middle_name', 'last_name', 'email', 'mobile', 'department_id', 'position');
+
+	protected $touches = array('account');
 
 	/**
 	 * The database table used by the model.
@@ -20,8 +22,19 @@ class Employee extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $table = 'employees';
 
-	public function account()
-    {
-        return $this->belongsTo('Account');
+	public function account() {
+        return $this->belongsTo('Account', 'username', 'username');
+    }
+
+    public function department() {
+        return $this->belongsTo('Department', 'department_id', 'department_id');
+    }
+
+    public function scopeDepartmentID($query, $department_id) {
+        return $query->where('department_id', '=', $department_id);
+    }
+
+    public function scopeHead($query) {
+    	return $query->where('position', '1');
     }
 }

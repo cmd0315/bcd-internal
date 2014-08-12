@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>BCD Internal</title>
+	<title>{{ isset($pageTitle) ? $pageTitle : '' }} | BCD Internal</title>
 	{{ HTML::style('css/bootstrap.css') }}
 	{{ HTML::style('css/main.css') }}
 </head>

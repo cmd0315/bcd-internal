@@ -17,18 +17,18 @@ class HomeController extends BaseController {
 
 	
 	public function home() {
-		return View::make('home');
+		return View::make('home', array('pageTitle' => 'Home'));
 	}
 
 	public function dashboard() {
-		return View::make('account.dashboard');
+		return View::make('account.dashboard', array('pageTitle' => 'Dashboard'));
 	}
 
 	public function forms() {
-		return View::make('online-forms.leave-of-absence');
+		return View::make('online-forms.leave-of-absence', array('pageTitle' => 'Create Request'));
 	}
 
 	public function adminAddRecord() {
-		return View::make('admin.add-record');
+		return View::make('admin.add-record', array('pageTitle' => 'Add System Record'));
 	}
 }

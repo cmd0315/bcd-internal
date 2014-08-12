@@ -6,6 +6,9 @@
       <div class="col-lg-6 col-lg-offset-3">
         <h1>Add Employee Account</h1>
         <h3>Fill up the form below to create an account for employee</h3>
+        @if(Session::has('global'))
+        <p class="text-danger emphasize"> {{ Session::get('global') }} </p>
+        @endif
 
       </div>
     </div><!-- /row -->
@@ -54,22 +57,48 @@
           </div><!-- /row -->
           <div class="row">
             <h4>Employee Information</h4>
-            <div class="col-lg-6">
+            <div class="col-lg-4">
               <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">Name</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" id="name" name="name"{{ (Input::old('name')) ? ' value ="' . Input::old('name') . '"' : '' }}>
-                  @if($errors->has('name'))
-                  	<p class="bg-danger">{{ $errors->first('name') }}</p>
+                <label for="first_name" class="col-sm-4 control-label">First Name</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="first_name" name="first_name"{{ (Input::old('first_name')) ? ' value ="' . Input::old('first_name') . '"' : '' }}>
+                  @if($errors->has('first_name'))
+                    <p class="bg-danger">{{ $errors->first('first_name') }}</p>
                   @endif
                 </div>
               </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="middle_name" class="col-sm-4 control-label">Middle Name</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="middle_name" name="middle_name"{{ (Input::old('middle_name')) ? ' value ="' . Input::old('middle_name') . '"' : '' }}>
+                  @if($errors->has('middle_name'))
+                    <p class="bg-danger">{{ $errors->first('middle_name') }}</p>
+                  @endif
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="last_name" class="col-sm-4 control-label">Last Name</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="last_name" name="last_name"{{ (Input::old('last_name')) ? ' value ="' . Input::old('last_name') . '"' : '' }}>
+                  @if($errors->has('last_name'))
+                    <p class="bg-danger">{{ $errors->first('last_name') }}</p>
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+             <div class="col-lg-6">
               <div class="form-group">
                 <label for="email" class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-10">
                   <input type="email" class="form-control" id="email" name="email"{{ (Input::old('email')) ? ' value ="' . Input::old('email') . '"' : '' }}>
                   @if($errors->has('email'))
-                  	<p class="bg-danger">{{ $errors->first('email') }}</p>
+                    <p class="bg-danger">{{ $errors->first('email') }}</p>
                   @endif
                 </div>
               </div>
@@ -78,7 +107,7 @@
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="mobile" name="mobile"{{ (Input::old('mobile')) ? ' value ="' . Input::old('mobile') . '"' : '' }}>
                   @if($errors->has('mobile'))
-                  	<p class="bg-danger">{{ $errors->first('mobile') }}</p>
+                    <p class="bg-danger">{{ $errors->first('mobile') }}</p>
                   @endif
                 </div>
               </div>
@@ -87,12 +116,7 @@
               <div class="form-group">
                 <label for="department" class="col-sm-2 control-label">Department</label>
                 <div class="col-sm-10">
-                  	<select class="form-control" id="inputDepartment" name="department">
-                  		<option></option>
-                      @foreach($departments as $department)
-	                     <option value="{{ $department->department }}">{{ $department->department }}</option>
-                      @endforeach
-	                </select>
+                  	{{ Form::select('department', $departments, Input::old('department'), array('class' => 'form-control')) }}
                   @if($errors->has('department'))
                   	<p class="bg-danger">{{ $errors->first('department') }}</p>
                   @endif
@@ -101,11 +125,8 @@
               <div class="form-group">
                 <label for="position" class="col-sm-2 control-label">Position</label>
                 <div class="col-sm-10">
-                  <select class="form-control" id="position" name="position">
-                  		<option></option>
-	                    <option value="0">Member</option>
-	                    <option value="1">Head</option>
-	               </select>
+                  {{ Form::select('position', array('0' => 'Member', '1' => 'Head'), Input::old('position'), array('class' => 'form-control')) }}
+
                   @if($errors->has('position'))
                   	<p class="bg-danger">{{ $errors->first('position') }}</p>
                   @endif
@@ -113,7 +134,7 @@
               </div>
             </div>
           </div><!-- /row -->
-          <div class="row">
+          <div class="row mt">
             <div class="col-lg-1 col-lg-offset-11">
               <button type="submit" class="btn btn-lg btn-warning" id="submit_form" name="submit_form">Submit</button>
             </div>
@@ -123,5 +144,5 @@
         </form><!-- /form -->
       </div>
     </div><!-- /row -->
-  </div>
+</div>
 @stop

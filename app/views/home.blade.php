@@ -5,7 +5,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6">
-					<h1>BCD Online Forms</h1>
+					<h1>Online Forms</h1>
 					@if(Auth::check())
 						{{ View::make('account.dashboard') }}
 		            @else

@@ -261,6 +261,29 @@ img.thumb {
     color: #d58512!important;
 }
 
+#employee-table {
+    font-size: 13px;
+}
+
+.badge {
+    margin-left: 5px;
+    background-color: #E73636;
+}
+
+.dropdown-menu {
+    background-color: #f8f8f8;
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: #E5E3E2;
+}
+
+.delete-item {
+    display: none;
+    color: red;
+    font-weight: bold;
+}
+
 /* Font */
 @font-face {
     font-family: "Vaud";

@@ -8,7 +8,7 @@
         @if(Session::has('global'))
           <p class="text-info emphasize"> {{ Session::get('global') }} </p><br/>
         @endif
-        <h3>Hi, {{ $username = e(Auth::user()->username) }} ! <br/> What Do You Want to Do?</h3>
+        <h3>Hi, {{ e(Auth::user()->employee->first_name) }} ! <br/> What Do You Want to Do?</h3>
 
       </div>
     </div><!-- /row -->
@@ -23,7 +23,7 @@
       </div><!--/col-lg-4 -->
 
       <!-- Add special function for System Admin -->
-      @if(Employee::where('username', $username)->pluck('position') === 2)
+      @if(Employee::where('username', e(Auth::user()->username))->pluck('position') === 2)
         <div class="col-lg-4 dashboard-options">
           <a href="{{ URL::route('admin-add-record') }}">
             {{ HTML::image("img/add-record.png", "Manage System Records", array('class' => 'thumb')) }}
