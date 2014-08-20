@@ -6,6 +6,9 @@
  * Version: 1.0
  * URL: http://blacktie.co
  */
+
+@import url('responsive-bcd.css');
+
 html, body {
     height: 100%;
 }
@@ -107,6 +110,11 @@ hr {
     border-bottom: 2px solid #e67e22;
 }
 
+.navbar-main {
+    background-color: transparent;
+    border-bottom: 0;
+}
+
 .navbar-default-side {
     background-color: transparent;
     border-color: transparent;
@@ -183,6 +191,9 @@ i {
     padding: 20px 10px;
     color: #ffffff;
 }
+#footer2 {
+    border-top: 5px solid #06a885;
+}
 #footer footer {
     width: 100%;
     max-width: 1170px;
@@ -193,13 +204,14 @@ i {
 }
 
 /* Wrap */
-#wrap {
+#wrap, #wrap2 {
     min-height: 100%;
     height: auto !important;
     height: 100%;
+}
+#wrap {
     margin: 0 auto -60px;
 }
-
 .form-wrap {
     background-color: #fff;
 }
@@ -238,12 +250,10 @@ img.thumb {
     background-color: #E89999;
 }
 
-/* Side Menu */
-/* make sidebar nav vertical from: http://getbootstrap.com/examples/dashboard/*/
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0px;
+/* Side Menu 
+* http://www.bootply.com/88026
+*/
+#sidebar {
     height: 100%;
     z-index: 1000;
     display: block;
@@ -252,15 +262,22 @@ img.thumb {
     overflow-y: auto;
     background-color: #e6e7e8;
     border-right: 1px solid #EEE;
+    padding-right: 0;
+    padding-top: 20px;
 }
-.sidebar .nav li a {
+#sidebar .nav {
+  width: 95%;
+}
+#sidebar li a {
     color: #59595b;
 }
-
+/**/
+#navbar-brand1 {
+    display: none;
+}
 .active a {
     color: #d58512!important;
 }
-
 #employee-table {
     font-size: 13px;
 }
@@ -283,7 +300,60 @@ img.thumb {
     color: red;
     font-weight: bold;
 }
-
+.main {
+    padding: 0 30px;
+}
+.form-header {
+    border-bottom: 3px solid #f05926;
+}
+.form-msg {
+    margin: 10px;
+    padding: 20px;
+}
+.form-meta {
+    border-top: 3px solid #f05926;
+}
+.form-title {
+    margin-bottom: 5px;
+}
+.form-number {
+    margin-top: 0;
+    color: #231f20;
+}
+.form-inputs {
+    padding: 0;
+}
+.form-label {
+    font-style: italic;
+}
+.form-inputs input, .form-inputs textarea {
+    border-radius: 0;
+    margin: 5px 0;
+    border: 0;
+    font-size: 14px;
+}
+.form-inputs select {
+    font-size: 14px;
+}
+.form .first, .form .meta-firsts {
+    border-bottom: 2px solid #06a885;
+}
+.form .right {
+    height: 100%;
+    min-height: 320px;
+}
+.form .right, .form .right input {
+    background-color: #e6e7e8;
+}
+.form-divider {
+    padding: 50px 0;
+}
+#bcd-ci {
+    margin: 0 30px
+}
+.row-fluid {
+    clear: both;
+}
 /* Font */
 @font-face {
     font-family: "Vaud";

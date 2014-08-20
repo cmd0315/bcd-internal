@@ -24,11 +24,27 @@ class HomeController extends BaseController {
 		return View::make('account.dashboard', array('pageTitle' => 'Dashboard'));
 	}
 
-	public function forms() {
-		return View::make('online-forms.leave-of-absence', array('pageTitle' => 'Create Request'));
-	}
-
 	public function adminAddRecord() {
 		return View::make('admin.add-record', array('pageTitle' => 'Add System Record'));
 	}
+
+	public function getManageDepartment() {
+		return 	View::make('admin.manage-department', array('pageTitle' => 'Manage Departments'))
+				->with('departments', Department::orderBy('department')->get());
+	}
+
+	public function getManageEmployee() {
+		return 	View::make('admin.manage-employee', array('pageTitle' => 'Manage Employees'))
+				->with('employees', Employee::orderBy('last_name')->get());
+	}
+
+	public function getManageClient() {
+		return 	View::make('admin.manage-client', array('pageTitle' => 'Manage Clients'))
+				->with('clients', Client::orderBy('client_name')->get());
+	}
+
+	// public function getManageForm($username) {
+	// 	return 	View::make('online-forms.manage', array('pageTitle' => 'Manage Created Forms'))
+	// 			->with('onlineForms', OnlineForm::where('created_by', $username));
+	// }
 }

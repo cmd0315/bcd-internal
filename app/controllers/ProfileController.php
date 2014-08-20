@@ -8,7 +8,7 @@
 			if($employee->count()){
 				$employee = $employee->first();
 
-				return 	View::make('profile.employee')
+				return 	View::make('profile.employee', array('pageTitle' => 'Edit Employee Information'))
 						->with('employee', $employee)
 						->with('departments', Department::orderBy('department')->get());
 			}

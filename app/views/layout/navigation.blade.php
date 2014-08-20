@@ -11,8 +11,8 @@
 		</div> <!-- navbar-header -->
 		<div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          		<li><a href="{{ URL::route('home')}}">Home</a></li>
             @if(Auth::check())
+          		<li><a href="{{ URL::route('dashboard')}}">Home</a></li>
             	<li>
 					<a href="#"><span class="badge pull-right">2</span>Messages</a>
 				</li>
@@ -25,6 +25,7 @@
 		          </ul>
 		        </li>
             @else
+          		<li><a href="{{ URL::route('home')}}">Home</a></li>
           		<li><a href="{{ URL::route('account-sign-in')}}">Sign in</a></li>
             	<li><a href="#">Guidelines</a></li>
             @endif

@@ -33,7 +33,7 @@
 
 				if($auth){
 					//Redirect to intended page
-					return Redirect::intended('/');
+					return Redirect::intended(URL::route('dashboard'));
 				}
 				else {
 					return  Redirect::route('account-sign-in')
@@ -63,9 +63,9 @@
 					'username' => 'required|max:20|min:5|unique:accounts',
 					'password' => 'required|max:50|min:6',
 					'password_again' => 'required|same:password',
-					'first_name' => 'required|max:50',
-					'middle_name' => 'required|max:50',
-					'last_name' => 'required|max:50',
+					'first_name' => 'required|max:50|min:2',
+					'middle_name' => 'required|max:50|min:2',
+					'last_name' => 'required|max:50|min:2',
 					'email' => 'required|max:50|email|unique:employees',
 					'mobile' => 'max:15|min:11',
 					'position' => 'required',
@@ -90,33 +90,67 @@
 				$department_id 		= Input::get('department');
 				$department_name 	= Department::where('department_id', $department_id)->pluck('department');
 				$position 			= Input::get('position');
+				$recreate 			= Input::get('recreate');
 
+				// Check first if a department head already exists
+				if($position == 1) {
+					$existingEmployee = Employee::departmentID($department_id)->head()->get();
+					if($existingEmployee->count()) {
+						if($recreate == 1){
+							return $this->createAccount($username, $password, $first_name, $middle_name, $last_name, $email, $mobile, $department_id, $position);
+						}
+						else {
+							$msg = "WARNING: Head employee for " . $department_name . " already exists. Click Save to continue or change employee's position to Member";
+							return 	Redirect::route('account-create')
+									->with('recreate', 1)
+									->with('global', $msg)
+									->withInput();
+						}
+					}
+					else {
+						return 	Redirect::route('account-create')
+								->with('global', "not existing");
+					}
+				}
+				else {
+					return $this->createAccount($username, $password, $first_name, $middle_name, $last_name, $email, $mobile, $department_id, $position);
+				}
+			}
+		}
 
-				$existingEmployee = Employee::departmentID($department_id)->head()->get();
+		public function createAccount($uN, $pWd, $fN, $mN, $lN, $em, $mob, $dID, $pos) {
+			//Add to accounts table
+			$account = Account::create(array(
+				'username' => $uN,
+				'password' => Hash::make($pWd),
+				'status' => 1
+			));
 
-				
-					//Add to accounts table
-					$account = Account::create(array(
-						'username' => $username,
-						'password' => Hash::make($password),
-						'status' => 1
-					));
+			//Add to employees table
+			$employee = Employee::create(array(
+				'username' => $uN,
+				'first_name' => $fN,
+				'middle_name' => $mN,
+				'last_name' => $lN,
+				'email' => $em,
+				'mobile' => $mob,
+				'department_id' => $dID,
+				'position' => $pos
+			));
 
-					//Add to employees table
-					$employee = Employee::create(array(
-						'username' => $username,
-						'first_name' => $first_name,
-						'middle_name' => $middle_name,
-						'last_name' => $last_name,
-						'email' => $email,
-						'mobile' => $mobile,
-						'department_id' => $department_id,
-						'position' => $position
-					));
+			if($account) {
+				if($employee) {
 					return 	Redirect::route('account-create')
 							->with('global', 'Employee account successfully created!');
-				
-
+				}
+				else {
+					return 	Redirect::route('account-create')
+						->with('global', 'Failed to create employee profile!');
+				}
+			}
+			else {
+				return 	Redirect::route('account-create')
+						->with('global', 'Failed to create employee account!');
 			}
 		}
 
@@ -162,6 +196,23 @@
 			}
 			return  Redirect::route('account-change-account-details')
 					->with('global', 'Cannot change password');
+		}
+
+
+		public function getDeactiveEmployeeAccount($username) {
+			$employee = Employee::where('username', $username)->first();
+
+			$msg = "";
+			if($employee->count()) {
+				$employee->delete();
+				$msg = "Account of employee with username " . $username . " is deactivated!";
+			}
+			else {
+				$msg = 'Failed to deactivate account of employee with username ' . $username;
+			}
+
+			return 	Redirect::route('admin-manage-employee')
+					->with('global', $msg);
 		}
 
 	}

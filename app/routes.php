@@ -5,35 +5,18 @@
 | Application Routes
 |--------------------------------------------------------------------------
 */
-
-// Route::get('/', function()
-// {
-// 	return View::make('master');
-// });
-
 Route::get('/', array (
 	'as' => 'home',
 	'uses' => 'HomeController@home'
 ));
-
-Route::get('/online-forms', array (
-	'as' => 'online-forms',
-	'uses' => 'HomeController@forms'
+Route::get('/dashboard', array (
+	'as' => 'dashboard',
+	'uses' => 'HomeController@dashboard'
 ));
 
-Route::get('/admin/add-record', array (
-	'as' => 'admin-add-record',
-	'uses' => 'HomeController@adminAddRecord'
-));
-
-Route::get('/employee/{username}', array (
-	'as' => 'profile-employee',
-	'uses' => 'ProfileController@employee'
-));
 /*
 *
 * Authenticated group
-*
 */
 Route::group(array('before' => 'auth'), function(){
 	/*
@@ -56,39 +39,74 @@ Route::group(array('before' => 'auth'), function(){
 			/ Add Department (POST)
 			*/
 			Route::post('/admin/department/add', array(
-				'as' => 'admin-add-department-post',
-				'uses' => 'ManageSystemDataController@postAddDepartment'
+				'as' => 'admin-department-add-post',
+				'uses' => 'DepartmentController@postAddDepartment'
 			));
 
 			/*
-			/ Manage Employee Information (POST)
+			/ Edit Employee Information (POST)
 			*/
 			Route::post('/employee/{username}', array (
 				'as' => 'profile-employee-edit',
 				'uses' => 'ProfileController@postEmployee'
 			));
+
+			/*
+			/ Edit Department Information (POST)
+			*/
+			Route::post('admin/department/{departmentID}', array (
+				'as' => 'admin-department-edit-post',
+				'uses' => 'DepartmentController@postEditDepartment'
+			));
+
+			/*
+			/ Add Client (POST)
+			*/
+			Route::post('/admin/client/add', array(
+				'as' => 'admin-client-add-post',
+				'uses' => 'ClientController@postAddClient'
+			));
+
+			/*
+			/ Edit Client Information (POST)
+			*/
+			Route::post('/admin/client/{clientID}/edit', array (
+				'as' => 'admin-client-edit-post',
+				'uses' => 'ClientController@postEditClient'
+			));
 		});
 
+		/*
+		/ Update Account Information (POST)
+		*/
 		Route::post('account/change-account-details', array(
 			'as' => 'account-change-account-details-post',
 			'uses' => 'AccountController@postChangeProfileDetails'
+		));
+
+		/*
+		/ Request for Payment (POST)
+		*/
+		Route::post('/online-forms/request-for-payment', array (
+			'as' => 'request-for-payment-post',
+			'uses' => 'RequestForPaymentController@postForm'
 		));
 
 	});
 
 
 	/*
-	/ Change Password (GET)
-	*/
-	Route::get('/account/change-account-details', array(
-		'as' => 'account-change-account-details',
-		'uses' => 'AccountController@getChangeProfileDetails'
-	));
-
-	/*
 	/ System Admin group
 	*/
 	Route::group(array('before' => 'role'), function() {
+		/*
+		/ View Options for System Records Management (POST)
+		*/
+		Route::get('/admin/add-record', array (
+			'as' => 'admin-add-record',
+			'uses' => 'HomeController@adminAddRecord'
+		));
+
 		/*
 		/ Create employee account (GET)
 		*/
@@ -98,45 +116,109 @@ Route::group(array('before' => 'auth'), function(){
 		));
 
 		/*
-		/ Add Department (GET)
-		*/
-		Route::get('/admin/department/add', array(
-			'as' => 'admin-add-department',
-			'uses' => 'ManageSystemDataController@getAddDepartment'
-		));
-
-		/*
 		/ Manage Department (GET)
 		*/
-		Route::get('/admin/department/manage', array(
+		Route::get('/admin/departments/manage', array(
 			'as' => 'admin-manage-department',
-			'uses' => 'ManageSystemDataController@getManageDepartment'
+			'uses' => 'HomeController@getManageDepartment'
 		));
 
 		/*
 		/ Manage Employees (GET)
 		*/
-		Route::get('/admin/employee/manage', array(
+		Route::get('/admin/employees/manage', array(
 			'as' => 'admin-manage-employee',
-			'uses' => 'ManageSystemDataController@getManageEmployee'
+			'uses' => 'HomeController@getManageEmployee'
 		));
 
 		/*
-		/ Delete Employees (GET)
+		/ Manage Client (GET)
 		*/
-		Route::get('/employee/deactivate/{username}', array(
-			'as' => 'admin-employee-deactivate',
-			'uses' => 'ManageSystemDataController@getDeactiveEmployeeAccount'
+		Route::get('/admin/clients/manage', array(
+			'as' => 'admin-client-manage',
+			'uses' => 'HomeController@getManageClient'
+		));
+
+		/*
+		/ Add Department (GET)
+		*/
+		Route::get('/admin/department/add', array(
+			'as' => 'admin-department-add',
+			'uses' => 'DepartmentController@getAddDepartment'
 		));
 
 		/*
 		/ Delete Departments (GET)
 		*/
-		Route::get('/department/delete/{department}', array(
+		Route::get('/admin/department/delete/{department}', array(
 			'as' => 'admin-department-delete',
-			'uses' => 'ManageSystemDataController@getDeleteDepartment'
+			'uses' => 'DepartmentController@getDeleteDepartment'
+		));
+
+		/*
+		/ Delete Employees (GET)
+		*/
+		Route::get('/admin/employee/deactivate/{username}', array(
+			'as' => 'admin-employee-deactivate',
+			'uses' => 'AccountController@getDeactiveEmployeeAccount'
+		));
+
+		/*
+		/ Edit Department Information (GET)
+		*/
+		Route::get('/admin/department/{departmentID}/edit', array (
+			'as' => 'admin-department-edit',
+			'uses' => 'DepartmentController@getEditDepartment'
+		));
+
+		/*
+		/ Add Client (GET)
+		*/
+		Route::get('/admin/client/add', array (
+			'as' => 'admin-client-add',
+			'uses' => 'ClientController@getAddClient'
+		));
+
+		/*
+		/ Edit Client Information (GET)
+		*/
+		Route::get('/admin/client/{clientID}/edit', array (
+			'as' => 'admin-client-edit',
+			'uses' => 'ClientController@getEditClient'
 		));
 	});
+
+	/*
+	/ View Form Options (GET)
+	*/
+	Route::get('/online-forms', array (
+		'as' => 'online-forms',
+		'uses' => 'LeaveOfAbsenceController@getForm'
+	));
+
+	/*
+	/ Request for Payment (GET)
+	*/
+	Route::get('/online-forms/request-for-payment', array (
+		'as' => 'request-for-payment',
+		'uses' => 'RequestForPaymentController@getForm'
+	));
+
+	/*
+	/ View Employee Information (GET)
+	*/
+	Route::get('/employee/{username}', array (
+		'as' => 'profile-employee',
+		'uses' => 'ProfileController@employee'
+	));
+
+	/*
+	/ Update Account Information (GET)
+	*/
+	Route::get('/account/change-account-details', array(
+		'as' => 'account-change-account-details',
+		'uses' => 'AccountController@getChangeProfileDetails'
+	));
 
 	/*
 	/ Sign out (GET)
