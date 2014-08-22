@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Department extends Eloquent implements UserInterface, RemindableInterface {
 
-	use UserTrait, RemindableTrait;
+	use UserTrait, RemindableTrait, SoftDeletingTrait;
 	// use SoftDeletingTrait;
 	
 	protected $table = 'departments';

@@ -29,10 +29,15 @@
               <label for="department_head" class="col-sm-4 control-label {{$departmentHeadUsername ? '' : 'text-info'}}">{{$departmentHeadUsername ? 'Current Head Employee' : 'Select New Head Employee'}}</label>
             <div class="col-sm-8">
               <select class="form-control" name="department_head" id="department_head">
+                <?php $count = 0; ?>
                 @foreach($employees as $employee)
+                  <?php $count += 1; ?>
                   @if($departmentHeadUsername == (e($employee->username)))
                     <option value="{{ e($employee->username) }}" selected="selected"> {{ $employee_full_name = e($employee->first_name) . " " . e($employee->middle_name) . " " . e($employee->last_name) }} </option>
                   @else
+                    @if($count === 1)
+                      <option></option>
+                    @endif
                     <option value="{{ e($employee->username) }}"> {{ $employee_full_name = e($employee->first_name) . " " . e($employee->middle_name) . " " . e($employee->last_name) }} </option>
                   @endif
                 @endforeach

@@ -72,9 +72,8 @@
 			return 	View::make('profile.department', array('pageTitle' => 'Edit Department Information'))
 					->with('department', $department)
 					->with('departmentHeadUsername', $department_head_username)
-					->with('employees', Employee::all())
+					->with('employees', Employee::where('department_id', $departmentID))
 					->with('dept_members', $dept_members);
-					// ->with('employees', Employee::select('username', DB::raw('CONCAT(first_name, " ", middle_name, " ", last_name) AS full_name'))->orderBy('first_name')->lists('full_name', 'username'));
 		}
 
 		public function postEditDepartment($departmentID) {
@@ -96,28 +95,36 @@
 				//Get department
 				$department_name_exists = Department::where('department_id', '!=', $departmentID)->where('department', $department_name)->first();
 				$department = Department::where('department_id', $departmentID)->first();
-				
-				$head_employee_exists = Employee::where('department_id', $departmentID)->where('position', 1)->first();
-				$employee = Employee::where('username', $employee_username)->first();
 
 				if($department->count() && !($department_name_exists)) {
 					$department->department = $department_name;
 
+					//check if saving department details is successful
 					if($department->save()){
 
+						//check if there's already an existing department head
+						$head_employee_exists = Employee::where('department_id', $departmentID)->where('position', 1)->first();
 						if($head_employee_exists) {
 							$head_employee_exists->position = 0;
 							$head_employee_exists->save();
 						}
 
-						$employee->position = 1;
-						$employee->department_id = $departmentID;
+						//check if there's an input for employee name
+						$employee = Employee::where('username', $employee_username)->first();
+						if($employee) {
+							$employee->position = 1;
+							$employee->department_id = $departmentID;
 
-						if($employee->save()) {
-							$return_msg ="Department information is updated!";
+							//check if saving employee data is successful
+							if($employee->save()) {
+								$return_msg ="Department information is updated!";
+							}
+							else{
+								$return_msg = "Failed to update department information! Error on updating position of head employee";
+							}
 						}
 						else {
-							$return_msg = "Failed to update department information! Error on updating position of head employee";
+							$return_msg ="Department information is updated!";
 						}
 					}
 					else {						

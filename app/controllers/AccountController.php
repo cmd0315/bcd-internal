@@ -93,23 +93,17 @@
 				$recreate 			= Input::get('recreate');
 
 				// Check first if a department head already exists
-				if($position == 1) {
-					$existingEmployee = Employee::departmentID($department_id)->head()->get();
-					if($existingEmployee->count()) {
-						if($recreate == 1){
-							return $this->createAccount($username, $password, $first_name, $middle_name, $last_name, $email, $mobile, $department_id, $position);
-						}
-						else {
-							$msg = "WARNING: Head employee for " . $department_name . " already exists. Click Save to continue or change employee's position to Member";
-							return 	Redirect::route('account-create')
-									->with('recreate', 1)
-									->with('global', $msg)
-									->withInput();
-						}
+				$existingEmployee = Employee::departmentID($department_id)->head()->get();
+				if($existingEmployee->count() && $position == 1) {
+					if($recreate == 1){
+						return $this->createAccount($username, $password, $first_name, $middle_name, $last_name, $email, $mobile, $department_id, $position);
 					}
 					else {
+						$msg = "WARNING: Head employee for " . $department_name . " already exists. To  continue, update password fields and click Save or change employee's position to Member and click Save";
 						return 	Redirect::route('account-create')
-								->with('global', "not existing");
+								->with('recreate', 1)
+								->with('global', $msg)
+								->withInput();
 					}
 				}
 				else {

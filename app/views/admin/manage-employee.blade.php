@@ -28,9 +28,9 @@
             <td> {{ $username }} </td>
             <td> {{ e($employee->department->department) }} </td>
 
-            @if(($employee_position = e($employee->position)) === 2) 
+            @if(($employee_position = e($employee->position)) == 2) 
               <td>System Admin</td>
-            @elseif($employee_position === 1)
+            @elseif($employee_position == 1)
               <td>Head</td>
             @else
               <td>Member</td>
